@@ -1,0 +1,6 @@
+include ':xisp-core'
+include ':customers-service'
+include ':auth-service'
+include ':shared'
+
+rootProject.name = 'xisp-java'
