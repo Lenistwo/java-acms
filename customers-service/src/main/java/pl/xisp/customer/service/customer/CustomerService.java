@@ -47,7 +47,7 @@ public class CustomerService {
     }
 
     public PageableResponse<List<Customer>> getAllCustomers(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Customer.class)).orElse(getAllCustomer(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Customer.class).orElse(getAllCustomer(page, limit));
     }
 
     private PageableResponse<List<Customer>> getAllCustomer(int page, int limit) {

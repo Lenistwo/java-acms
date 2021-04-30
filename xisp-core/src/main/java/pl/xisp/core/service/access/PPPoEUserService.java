@@ -23,8 +23,7 @@ public class PPPoEUserService {
     private final SearchUtil<PPPoEUser> searchUtil;
 
     public PageableResponse<List<PPPoEUser>> getAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, PPPoEUser.class))
-                       .orElse(getAllPPPoEUsers(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, PPPoEUser.class).orElse(getAllPPPoEUsers(page, limit));
     }
 
     private PageableResponse<List<PPPoEUser>> getAllPPPoEUsers(int page, int limit) {

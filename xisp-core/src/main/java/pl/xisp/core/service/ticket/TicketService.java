@@ -28,7 +28,7 @@ public class TicketService {
     }
 
     public PageableResponse<List<Ticket>> findAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Ticket.class)).orElse(getAllTickets(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Ticket.class).orElse(getAllTickets(page, limit));
     }
 
     public Response<String> createTicket(Ticket ticket) {

@@ -28,8 +28,7 @@ public class MessageService {
     }
 
     public PageableResponse<List<Message>> findAllMessages(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Message.class))
-                .orElse(getAllMessages(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Message.class).orElse(getAllMessages(page, limit));
     }
 
     private PageableResponse<List<Message>> getAllMessages(int page, int limit) {

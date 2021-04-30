@@ -24,7 +24,7 @@ public class SurchargeService {
     private final SearchUtil<Surcharge> searchUtil;
 
     public PageableResponse<List<Surcharge>> getAllSurcharges(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Surcharge.class)).orElse(findAllSurcharges(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Surcharge.class).orElse(findAllSurcharges(page, limit));
     }
 
     private PageableResponse<List<Surcharge>> findAllSurcharges(int page, int limit) {

@@ -22,8 +22,7 @@ public class ServicePlanService {
     private final SearchUtil<ServicePlan> searchUtil;
 
     public PageableResponse<List<ServicePlan>> getServicePlans(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, ServicePlan.class))
-                .orElse(findServicePlans(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, ServicePlan.class).orElse(findServicePlans(page, limit));
     }
 
     private PageableResponse<List<ServicePlan>> findServicePlans(int page, int limit) {

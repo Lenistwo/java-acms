@@ -22,8 +22,7 @@ public class NetworkDeviceService {
     private final SearchUtil<NetworkDevice> searchUtil;
 
     public PageableResponse<List<NetworkDevice>> getAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, NetworkDevice.class))
-                .orElse(getAllNetworkDevices(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, NetworkDevice.class).orElse(getAllNetworkDevices(page, limit));
     }
 
     private PageableResponse<List<NetworkDevice>> getAllNetworkDevices(int page, int limit) {

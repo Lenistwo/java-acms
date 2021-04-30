@@ -23,8 +23,7 @@ public class DHCPLeaseService {
     private final SearchUtil<DHCPLease> searchUtil;
 
     public PageableResponse<List<DHCPLease>> getAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, DHCPLease.class))
-                .orElse(getAllDHCPLeases(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, DHCPLease.class).orElse(getAllDHCPLeases(page, limit));
     }
 
     private PageableResponse<List<DHCPLease>> getAllDHCPLeases(int page, int limit) {

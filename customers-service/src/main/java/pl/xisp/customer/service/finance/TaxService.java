@@ -23,7 +23,7 @@ public class TaxService {
     private final SearchUtil<Tax> searchUtil;
 
     public PageableResponse<List<Tax>> getAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Tax.class)).orElse(findAllTaxes(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Tax.class).orElse(findAllTaxes(page, limit));
     }
 
     private PageableResponse<List<Tax>> findAllTaxes(int page, int limit) {

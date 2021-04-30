@@ -13,6 +13,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,17 +25,17 @@ public class SearchUtil<T> {
     private final Gson gson;
     private final MongoTemplate template;
 
-    public PageableResponse<List<T>> prepareSearchResponse(int page, int limit, String search, Class<T> returnType) {
+    public Optional<PageableResponse<List<T>>> prepareSearchResponse(int page, int limit, String search, Class<T> returnType) {
 
         @SuppressWarnings("unchecked") Map<String, String> searchParams = gson.fromJson(URLDecoder.decode(search, StandardCharsets.UTF_8), Map.class);
 
         var query = prepareQuery(searchParams);
 
-        if (query == null) {
-            return null;
+        if (query.isEmpty()) {
+            return Optional.empty();
         }
 
-        var queryResult = template.find(query, returnType);
+        var queryResult = template.find(query.get(), returnType);
 
         List<T> response = null;
 
@@ -49,20 +50,20 @@ public class SearchUtil<T> {
         var totalPageAmount = calculateTotalPageAmount(queryResult, limit);
         var pagination = new Pagination(page, limit, queryResult.size(), totalPageAmount);
 
-        return new PageableResponse<>(STATUS, response, pagination);
+        return Optional.of(new PageableResponse<>(STATUS, response, pagination));
     }
 
     private int calculateTotalPageAmount(List<?> list, int limit) {
         return list.size() % limit == 0 ? list.size() / limit : list.size() / limit + 1;
     }
 
-    private Query prepareQuery(Map<String, String> map) {
+    private Optional<Query> prepareQuery(Map<String, String> map) {
         Criteria criteria = null;
 
-        var i = 0;
+        var addWhere = true;
 
         if (map == null) {
-            return null;
+            return Optional.empty();
         }
 
         for (var key : map.keySet()) {
@@ -71,14 +72,18 @@ public class SearchUtil<T> {
                 continue;
             }
 
-            if (i == 0) {
+            if (addWhere) {
                 criteria = Criteria.where(key).regex(map.get(key));
-                i++;
+                addWhere = false;
                 continue;
             }
             criteria.and(key).regex(map.get(key));
         }
 
-        return criteria == null ? null : new Query(criteria);
+        if (criteria == null){
+            return Optional.empty();
+        }
+
+        return Optional.of(new Query(criteria)) ;
     }
 }

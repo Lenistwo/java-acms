@@ -23,7 +23,7 @@ public class UserServiceService {
     private final SearchUtil<Service> searchUtil;
 
     public PageableResponse<List<Service>> getAll(int page, int limit, String search) {
-        return Optional.ofNullable(searchUtil.prepareSearchResponse(page, limit, search, Service.class)).orElse(findAllServices(page, limit));
+        return searchUtil.prepareSearchResponse(page, limit, search, Service.class).orElse(findAllServices(page, limit));
     }
 
     private PageableResponse<List<Service>> findAllServices(int page, int limit) {
